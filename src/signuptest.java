@@ -14,6 +14,11 @@ public class signuptest {
         // Launch website
         driver.navigate().to("https://www.convergehub.com/signup");
 
+        // driver.findElement(By.name("cookie-close")).click();
+        // WebElement sign = driver.findElement(By.name("cta-1 opensemi"));
+
+        // sign.click();
+        
         WebElement userName = driver.findElement(By.id("name_signup"));
         WebElement userEmail = driver.findElement(By.id("email_signup"));
         WebElement userPassword = driver.findElement(By.id("paw"));
