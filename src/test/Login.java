@@ -1,16 +1,11 @@
 package test;
 
 import org.openqa.selenium.*;
-
 import org.openqa.selenium.chrome.ChromeDriver;
-
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
-
 import org.openqa.selenium.Keys;
-
 import java.time.Duration;
 
 public class Login {
@@ -18,8 +13,6 @@ public class Login {
     public WebDriver driver;
     public WebDriverWait wait;
     public WebElement usernameInput, passwordInput, loginBtnInput;
-
-    // private WebElement sale , add;
 
     public By username = By.xpath("//input[@id='username']");
     public By password = By.xpath("//input[@id='password']");
@@ -30,7 +23,6 @@ public class Login {
     public By logout = By.xpath("//a[contains(text(),'Logout')]");
 
     public By hoversale = By.className("clr-1");
-    // private By hoversale = By.id("lbl_leads");
     public By addLead = By.xpath("//body/div[4]/nav[1]/ul[1]/li[2]/div[1]/div[1]/ul[1]/li[1]/a[1]");
     public By newLead = By.xpath("//a[contains(text(),'+ New')]");
     public By fname = By.id("first_name");
@@ -42,12 +34,14 @@ public class Login {
     public By subjectID = By.xpath("//input[@id='subject']");
     
     By AI = By.xpath("//a[@id='ai_magic']");
-//    By AI = By.id("mceu_26-open");
-    
-     By prompt = By.xpath("//textarea[@id='text_prompt']");
+    By prompt = By.xpath("//textarea[@id='text_prompt']");
     By generateBtn = By.xpath("//button[@id='call_ai']");
-    
     By useBtn = By.xpath("//button[@id='use_this']");
+    
+    By AuthInput = By.xpath("//input[@id='verificationtext']");
+    By firstMail = By.xpath("/html/body/div[1]/main/div[2]/div[3]/div/div[4]/div/div/table/tbody/tr[1]/td[2]");
+    By iframe = By.xpath("//*[@id='html_msg_body']");
+    By iBody = By.xpath("/html/body");
     
     public void setUp() {
          System.setProperty("webdriver.chrome.driver", "driver/chromedriver");
@@ -60,10 +54,7 @@ public class Login {
 
     public void simpleLogin() {
         performLogin("mdshakir151200@gmail.com", "Shakir@151200");
-
-        handleProceed();
-
-        handlePopup();
+        handleProceed();   
     }
 
     public void hoverSale() {
@@ -71,7 +62,6 @@ public class Login {
         WebElement sale = driver.findElement(this.hoversale);
         Actions actions1 = new Actions(driver);
         actions1.moveToElement(sale).perform();
-        // sale.click();
         WebElement add = driver.findElement(this.addLead);
         add.click();
         WebElement newlead = wait.until(ExpectedConditions.visibilityOfElementLocated(this.newLead));
@@ -108,7 +98,7 @@ public class Login {
         passwordInput.sendKeys(password);
         loginBtnInput.click();
     }
-
+    
     private void handleProceed() {
         try {
             WebElement proceedElement = wait.until(ExpectedConditions.visibilityOfElementLocated(this.proceed));
@@ -120,15 +110,22 @@ public class Login {
         }
     }
 
-    private void handlePopup() {
+    public void handlePopup() {
+    	try {
+    		Thread.sleep(2000);
         WebElement popupElement = wait.until(ExpectedConditions.visibilityOfElementLocated(popup));
         if (popupElement.isDisplayed()) {
             popupElement.click();
             System.out.println("### Popup cross clicked");
         }
+    	}
+    	catch(Exception e) {
+    		System.out.println("Error : "+e.getMessage());
+    	}
     }
 
     public void hoverActivity() {
+    	
         WebElement activity = driver.findElement(this.hoveractivity);
         Actions actions1 = new Actions(driver);
         actions1.moveToElement(activity).perform();
@@ -143,40 +140,8 @@ public class Login {
 
         WebElement clickAI = wait.until(ExpectedConditions.visibilityOfElementLocated(this.AI));
         try {
-        	 Thread.sleep(2000);
-//        	 actions1.moveToElement(clickAI).build().perform();
-//        	 
-//             actions1.click(clickAI).perform();
-             
+        	 Thread.sleep(2000);          
              clickAI.click();
-        }
-        catch(Exception e) {
-        	System.out.println(e.getMessage());
-        }
-
-//        try {
-//        if(clickAI.isDisplayed()){
-//
-//			            clickAI.click();
-//        	 clickAI.sendKeys(Keys.ENTER);
-//            System.out.println("ClickAi is clicked");
-//        }
-//        }
-//        catch(Exception e){
-//            System.out.println("Error : "+e.getMessage());
-//        }
-//
-//        
-//        try{
-//            Actions act = new Actions(driver);
-//            act.moveToElement(clickAI).click().perform();
-//            System.out.println("ClickAi is clicked and hold");
-//        }
-//        catch(Exception e){
-//            System.out.println("Error : "+e.getMessage());
-//        }
-       
-         try {
         	 Thread.sleep(2000);
         	 WebElement inputPrompt = wait.until(ExpectedConditions.visibilityOfElementLocated(this.prompt));
              inputPrompt.sendKeys("Converge Hub");
@@ -199,10 +164,20 @@ public class Login {
     	Actions at = new Actions(driver);
         at.sendKeys(Keys.PAGE_DOWN).build().perform();
     	WebElement save = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[contains(text(),'Save as Draft')]")));
-//    	at.moveToElement(save).build().perform();
-//        at.click(save).perform();
-        save.click();
-        //This will scroll the page Horizontally till the element is found		
+        save.click();	
         handlePopup();
+    }
+    
+    public void mfa(String otp){
+        try{
+            WebElement verificationInput = wait.until(ExpectedConditions.visibilityOfElementLocated(this.AuthInput));
+            verificationInput.sendKeys(otp);
+
+            WebElement verifyBtn = wait.until(ExpectedConditions.elementToBeClickable(By.id("mfab")));
+            verifyBtn.click();
+        }
+        catch(Exception e){
+            System.out.println("MFA: " + e.getMessage());
+        }
     }
 }
