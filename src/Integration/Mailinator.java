@@ -1,5 +1,4 @@
 package Integration;
-
 import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -24,11 +23,8 @@ public class Mailinator {
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         driver.manage().window().maximize();
         driver.get("https://www.mailinator.com/index.jsp");
-        WebElement search = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("search")));
-        search.sendKeys("shakir15");
-        WebElement goBtn = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"site-header\"]/div[1]/div/div/div[1]/div/button")));  		
-        goBtn.click();
-        
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("search"))).sendKeys("shakir15");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"site-header\"]/div[1]/div/div/div[1]/div/button"))).click();
     }
 
     public String getOtp(){
@@ -37,7 +33,6 @@ public class Mailinator {
             topMostMail = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/main/div[2]/div[3]/div/div[4]/div/div/table/tbody/tr[1]/td[2]")));
             Thread.sleep(2000);
             topMostMail.click();
-
             wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(By.xpath("//*[@id='html_msg_body']")));
             Thread.sleep(2000);
             iframe = driver.findElement(By.xpath("/html/body"));
@@ -47,8 +42,7 @@ public class Mailinator {
         catch(Exception e){
             System.out.println("Mailinator Error: " + e.getMessage());
         }
-        finally{
-        	
+        finally{	
 //            driver.quit();
         }
         return otp;
