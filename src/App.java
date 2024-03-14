@@ -5,12 +5,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+// import test.campaign.Campaign;
 import test.list.List;
 import test.login.Login;
-// import test.target.Target;
+import test.target.Target;
 
 public class App {
     static{
+        
         System.setProperty("webdriver.chrome.driver", "driver/chromedriver");
     }
     public static void main(String[] args) {
@@ -20,11 +22,14 @@ public class App {
         driver.get("https://app01.convergehub.com");
         Login login = new Login(driver, wait);
         login.simpleLogin();
-        // Target target = new Target(driver, wait);
-        // target.createNewTarget();
+        // Campaign campaign = new Campaign(driver, wait);
+
+        // campaign.createCampaign();
+        Target target = new Target(driver, wait);
+        target.createNewTarget();
         List list = new List(driver, wait);
         list.createNewList();
-        // list.addTarget();
+        list.addTarget();
     }
 
 }
